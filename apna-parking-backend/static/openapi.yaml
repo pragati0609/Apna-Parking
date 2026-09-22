@@ -1,0 +1,359 @@
+openapi: 3.0.3
+info:
+  title: Booking & Payments API
+  description: >
+    Auth (signup/login), booking creation, and Razorpay-based payment
+    request/verify/history endpoints.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:5000
+    description: Local development
+
+tags:
+  - name: Auth
+  - name: Bookings
+  - name: Payments
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        user_id: { type: integer }
+        name: { type: string }
+        full_name: { type: string }
+        email: { type: string }
+        phone_number: { type: string }
+        created_at: { type: string, format: date-time, nullable: true }
+
+    Booking:
+      type: object
+      properties:
+        id: { type: integer }
+        booking_id: { type: integer }
+        user_id: { type: integer }
+        vehicle_id: { type: integer }
+        parking_id: { type: integer }
+        item_name: { type: string }
+        start_time: { type: string, format: date-time, nullable: true }
+        end_time: { type: string, format: date-time, nullable: true }
+        amount: { type: number, format: float }
+        total_amount: { type: number, format: float }
+        currency: { type: string, example: INR }
+        status: { type: string, enum: [Pending, Confirmed, Completed, Cancelled] }
+        created_at: { type: string, format: date-time, nullable: true }
+
+    Payment:
+      type: object
+      properties:
+        id: { type: integer }
+        payment_id: { type: integer }
+        booking_id: { type: integer }
+        razorpay_order_id: { type: string, nullable: true }
+        razorpay_payment_id: { type: string, nullable: true }
+        amount: { type: number, format: float }
+        currency: { type: string, example: INR }
+        status: { type: string, enum: [Pending, Successful, Failed, Refunded] }
+        payment_status: { type: string, enum: [Pending, Successful, Failed, Refunded] }
+        payment_method: { type: string, enum: [Card, UPI, NetBanking, Cash, Wallet] }
+        created_at: { type: string, format: date-time, nullable: true }
+        paid_at: { type: string, format: date-time, nullable: true }
+        booking:
+          type: object
+          nullable: true
+          properties:
+            id: { type: integer }
+            booking_id: { type: integer }
+            item_name: { type: string }
+            status: { type: string }
+
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: Missing/invalid credentials or token
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Forbidden:
+      description: Not allowed to access this resource
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Conflict:
+      description: Conflicting state (e.g. duplicate email, booking already paid)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    TooManyRequests:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    ServerError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+paths:
+  /signup:
+    post:
+      tags: [Auth]
+      summary: Create a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                full_name: { type: string, description: "User's full name" }
+                name: { type: string, description: "Alternative alias for full_name" }
+                email: { type: string }
+                password: { type: string, minLength: 6 }
+                phone_number: { type: string, description: "User phone number (auto-generated if omitted for quick testing)" }
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  user: { $ref: "#/components/schemas/User" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /login:
+    post:
+      tags: [Auth]
+      summary: Log in and receive a JWT access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  access_token: { type: string }
+                  user: { $ref: "#/components/schemas/User" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /profile:
+    get:
+      tags: [Auth]
+      summary: Get the logged-in user's profile
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Profile data
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /logout:
+    post:
+      tags: [Auth]
+      summary: Invalidate the current JWT
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Logged out
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /bookings:
+    post:
+      tags: [Bookings]
+      summary: Create a booking
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_name: { type: string, description: "Description or slot label (required if parking_id omitted)" }
+                parking_id: { type: integer, description: "Specific parking space ID (optional — auto-assigned if omitted)" }
+                vehicle_id: { type: integer, description: "Specific vehicle ID belonging to user (optional — auto-assigned if omitted)" }
+                amount: { type: number, example: 499.00, description: "Booking amount in INR (calculated from space rate if omitted)" }
+                currency: { type: string, default: INR, example: INR }
+                start_time: { type: string, format: date-time, description: "Booking start in ISO format (defaults to current time)" }
+                end_time: { type: string, format: date-time, description: "Booking end in ISO format (defaults to start_time + 2 hours)" }
+      responses:
+        "201":
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  booking: { $ref: "#/components/schemas/Booking" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+    get:
+      tags: [Bookings]
+      summary: List the current user's bookings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookings:
+                    type: array
+                    items: { $ref: "#/components/schemas/Booking" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /payments/create:
+    post:
+      tags: [Payments]
+      summary: Create a payment request (Razorpay order) for a booking
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [booking_id]
+              properties:
+                booking_id: { type: integer }
+      responses:
+        "201":
+          description: Payment request created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  order_id: { type: string }
+                  amount: { type: integer, description: "Amount in paise" }
+                  currency: { type: string }
+                  key_id: { type: string, description: "Razorpay public key, for the frontend checkout widget" }
+                  payment_id: { type: integer }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /payments/verify:
+    post:
+      tags: [Payments]
+      summary: Verify a completed Razorpay payment
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [razorpay_order_id, razorpay_payment_id, razorpay_signature]
+              properties:
+                razorpay_order_id: { type: string }
+                razorpay_payment_id: { type: string }
+                razorpay_signature: { type: string }
+      responses:
+        "200":
+          description: Payment verified (or already verified)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  payment: { $ref: "#/components/schemas/Payment" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /payments/history:
+    get:
+      tags: [Payments]
+      summary: Get the current user's booking/payment history (paginated)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: per_page
+          schema: { type: integer, default: 10, maximum: 50 }
+      responses:
+        "200":
+          description: Paginated payment history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payments:
+                    type: array
+                    items: { $ref: "#/components/schemas/Payment" }
+                  page: { type: integer }
+                  per_page: { type: integer }
+                  total_items: { type: integer }
+                  total_pages: { type: integer }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
