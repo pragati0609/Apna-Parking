@@ -37,6 +37,58 @@ def create_booking():
         start_time_raw = data.get("start_time")
         end_time_raw = data.get("end_time")
 
+        # Resolve from frontend format if present
+        spot_id_raw = data.get("spotId") or data.get("spot_id")
+        slot_number = data.get("slotNumber") or data.get("slot_number")
+        if not parking_id and spot_id_raw:
+            try:
+                loc_id = int(str(spot_id_raw).replace("spot-", ""))
+                candidate = None
+                if slot_number:
+                    candidate = ParkingSpace.query.filter_by(location_id=loc_id, space_number=slot_number, is_active=True).first()
+                if not candidate:
+                    candidate = ParkingSpace.query.filter_by(location_id=loc_id, is_active=True).first()
+                if candidate:
+                    parking_id = candidate.parking_id
+            except (ValueError, TypeError):
+                pass
+
+        vehicle_plate = data.get("vehiclePlate") or data.get("vehicle_plate")
+        if not vehicle_id and vehicle_plate:
+            plate_clean = str(vehicle_plate).strip().upper().replace("-", "").replace(" ", "")
+            v_type_raw = str(data.get("vehicleType") or data.get("vehicle_type") or "car").lower()
+            v_type = "TwoWheeler" if "bike" in v_type_raw else "FourWheeler"
+            v_model = data.get("vehicleModel") or data.get("vehicle_model") or "Standard Vehicle"
+            vehicle_match = Vehicle.query.filter_by(license_plate=plate_clean).first()
+            if vehicle_match:
+                # Plate exists — re-assign to current user if needed
+                if vehicle_match.user_id != user_id:
+                    vehicle_match.user_id = user_id
+                    db.session.flush()
+            else:
+                vehicle_match = Vehicle(
+                    user_id=user_id,
+                    license_plate=plate_clean,
+                    vehicle_type=v_type,
+                    make_model=v_model,
+                )
+                db.session.add(vehicle_match)
+                db.session.flush()
+            vehicle_id = vehicle_match.vehicle_id
+
+        date_raw = data.get("date")
+        time_raw = data.get("startTime")
+        duration_hrs_param = data.get("durationHours") or data.get("duration_hours")
+        if date_raw and time_raw and not start_time_raw:
+            try:
+                dt_str = f"{date_raw} {time_raw}"
+                parsed_dt = datetime.strptime(dt_str, "%Y-%m-%d %H:%M")
+                start_time_raw = parsed_dt.isoformat()
+                dur = int(duration_hrs_param) if duration_hrs_param else 2
+                end_time_raw = (parsed_dt + timedelta(hours=dur)).isoformat()
+            except Exception:
+                pass
+
         if not item_name and not parking_id:
             return jsonify({"error": "item_name or parking_id is required"}), 400
 
@@ -156,7 +208,12 @@ def create_booking():
         db.session.add(booking)
         db.session.commit()
 
-        return jsonify({"message": "Booking created", "booking": booking.to_dict()}), 201
+        return jsonify({
+            "message": "Booking created",
+            "success": True,
+            "booking": booking.to_dict(),
+            "data": booking.to_frontend_dict(),
+        }), 201
 
     except Exception as e:
         db.session.rollback()
@@ -175,10 +232,90 @@ def list_bookings():
             .order_by(Booking.created_at.desc())
             .all()
         )
-        return jsonify({"bookings": [b.to_dict() for b in bookings]}), 200
+        return jsonify({
+            "success": True,
+            "count": len(bookings),
+            "bookings": [b.to_dict() for b in bookings],
+            "data": [b.to_frontend_dict() for b in bookings],
+        }), 200
     except Exception as e:
         current_app.logger.exception("list_bookings error: %s", e)
         return jsonify({"error": "Internal server error"}), 500
+
+
+@bp.route("/bookings/<booking_id_str>/cancel", methods=["POST"])
+@jwt_required()
+def cancel_booking(booking_id_str):
+    """Cancel an active booking."""
+    try:
+        user_id = int(get_jwt_identity())
+        real_id = None
+        if str(booking_id_str).startswith("AP-"):
+            parts = booking_id_str.split("-")
+            real_id = int(parts[-1])
+        else:
+            try:
+                real_id = int(booking_id_str)
+            except ValueError:
+                return jsonify({"success": False, "message": "Invalid booking ID format"}), 400
+
+        booking = Booking.query.filter_by(booking_id=real_id, user_id=user_id).first()
+        if not booking:
+            return jsonify({"success": False, "message": "Booking not found"}), 404
+
+        booking.status = "Cancelled"
+        db.session.commit()
+        return jsonify({
+            "success": True,
+            "message": "Booking has been cancelled.",
+            "data": booking.to_frontend_dict(),
+            "booking": booking.to_dict(),
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.exception("cancel_booking error: %s", e)
+        return jsonify({"success": False, "message": "Internal server error"}), 500
+
+
+@bp.route("/bookings/<booking_id_str>/extend", methods=["POST"])
+@jwt_required()
+def extend_booking(booking_id_str):
+    """Extend duration of an active booking."""
+    try:
+        user_id = int(get_jwt_identity())
+        real_id = None
+        if str(booking_id_str).startswith("AP-"):
+            parts = booking_id_str.split("-")
+            real_id = int(parts[-1])
+        else:
+            try:
+                real_id = int(booking_id_str)
+            except ValueError:
+                return jsonify({"success": False, "message": "Invalid booking ID format"}), 400
+
+        booking = Booking.query.filter_by(booking_id=real_id, user_id=user_id).first()
+        if not booking:
+            return jsonify({"success": False, "message": "Booking not found"}), 404
+
+        data = request.get_json(silent=True) or {}
+        extra_hours = int(data.get("extraHours", 1))
+
+        if booking.end_time:
+            booking.end_time += timedelta(hours=extra_hours)
+        hourly_rate = booking.parking_space.location.hourly_rate if (booking.parking_space and booking.parking_space.location) else Decimal("40.00")
+        booking.total_amount += Decimal(extra_hours) * hourly_rate
+
+        db.session.commit()
+        return jsonify({
+            "success": True,
+            "message": f"Booking extended by {extra_hours} hour(s).",
+            "data": booking.to_frontend_dict(),
+            "booking": booking.to_dict(),
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.exception("extend_booking error: %s", e)
+        return jsonify({"success": False, "message": "Internal server error"}), 500
 
 
 # ---------------------------------------------------------------------------
@@ -196,9 +333,18 @@ def create_payment():
         if not data:
             return jsonify({"error": "Request body must be JSON"}), 400
 
-        booking_id = data.get("booking_id")
-        if not booking_id:
+        raw_booking_id = data.get("booking_id")
+        if not raw_booking_id:
             return jsonify({"error": "booking_id is required"}), 400
+
+        if str(raw_booking_id).startswith("AP-"):
+            parts = str(raw_booking_id).split("-")
+            booking_id = int(parts[-1])
+        else:
+            try:
+                booking_id = int(raw_booking_id)
+            except ValueError:
+                return jsonify({"error": "Invalid booking_id format"}), 400
 
         booking = Booking.query.filter_by(booking_id=booking_id, user_id=user_id).first()
         if not booking:
@@ -216,12 +362,26 @@ def create_payment():
         amount_in_subunits = int((booking.total_amount * 100).to_integral_value())
 
         client = get_razorpay_client()
-        order = client.order.create({
-            "amount": amount_in_subunits,
-            "currency": booking.currency,
-            "payment_capture": 1,
-            "notes": {"booking_id": str(booking.booking_id), "user_id": str(user_id)},
-        })
+        order = None
+        last_err = None
+        for attempt in range(3):
+            try:
+                order = client.order.create({
+                    "amount": amount_in_subunits,
+                    "currency": booking.currency,
+                    "payment_capture": 1,
+                    "notes": {"booking_id": str(booking.booking_id), "user_id": str(user_id)},
+                })
+                if order and "id" in order:
+                    break
+            except Exception as e:
+                last_err = e
+                current_app.logger.warning("Razorpay order creation attempt %d failed: %s", attempt + 1, e)
+                import time
+                time.sleep(0.5)
+
+        if not order or "id" not in order:
+            raise last_err or RuntimeError("Failed to create Razorpay order after retries")
 
         payment = Payment(
             booking_id=booking.booking_id,
@@ -233,12 +393,15 @@ def create_payment():
         db.session.add(payment)
         db.session.commit()
 
+        key_id = (os.getenv("RAZORPAY_KEY_ID") or "").strip()
+
         return jsonify({
+            "success": True,
             "message": "Payment request created",
             "order_id": order["id"],
             "amount": amount_in_subunits,
             "currency": booking.currency,
-            "key_id": os.getenv("RAZORPAY_KEY_ID"),
+            "key_id": key_id,
             "payment_id": payment.payment_id,
         }), 201
 
@@ -282,7 +445,12 @@ def verify_payment():
             return jsonify({"error": "Not allowed to verify this payment"}), 403
 
         if payment.payment_status in ["Successful", "paid", "Paid"]:
-            return jsonify({"message": "Payment already verified", "payment": payment.to_dict()}), 200
+            return jsonify({
+                "success": True,
+                "message": "Payment already verified",
+                "payment": payment.to_dict(),
+                "booking": payment.booking.to_frontend_dict() if payment.booking else None
+            }), 200
 
         client = get_razorpay_client()
         try:
@@ -294,7 +462,7 @@ def verify_payment():
         except razorpay.errors.SignatureVerificationError:
             payment.payment_status = "Failed"
             db.session.commit()
-            return jsonify({"error": "Payment verification failed"}), 400
+            return jsonify({"success": False, "error": "Payment verification failed"}), 400
 
         payment.razorpay_payment_id = payment_gateway_id
         payment.razorpay_signature = signature
@@ -305,7 +473,12 @@ def verify_payment():
 
         db.session.commit()
 
-        return jsonify({"message": "Payment verified successfully", "payment": payment.to_dict()}), 200
+        return jsonify({
+            "success": True,
+            "message": "Payment verified successfully",
+            "payment": payment.to_dict(),
+            "booking": payment.booking.to_frontend_dict() if payment.booking else None
+        }), 200
 
     except RuntimeError as e:
         current_app.logger.error("Razorpay runtime error: %s", e)

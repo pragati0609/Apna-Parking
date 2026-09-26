@@ -13,8 +13,8 @@ def get_razorpay_client():
     """
     global _client
     if _client is None:
-        key_id = os.getenv("RAZORPAY_KEY_ID")
-        key_secret = os.getenv("RAZORPAY_KEY_SECRET")
+        key_id = (os.getenv("RAZORPAY_KEY_ID") or "").strip()
+        key_secret = (os.getenv("RAZORPAY_KEY_SECRET") or "").strip()
         if not key_id or not key_secret:
             raise RuntimeError(
                 "RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET are not set in the environment"

@@ -251,3 +251,42 @@ def test_submit_contact_inquiry(client):
     assert resp.status_code == 200
     assert resp.get_json()["success"] is True
 
+
+def test_frontend_booking_and_lifecycle(client, auth_headers):
+    # Create booking using frontend payload structure
+    create_resp = client.post("/bookings", json={
+        "spotId": "spot-1",
+        "slotNumber": "B1-01",
+        "floor": "B1",
+        "vehicleType": "car",
+        "vehiclePlate": "MH12ZZ9999",
+        "vehicleModel": "Honda City",
+        "date": "2026-10-01",
+        "startTime": "14:00",
+        "durationHours": 3,
+        "customerName": "Test Driver",
+        "customerPhone": "+91 9876543210"
+    }, headers=auth_headers)
+
+    assert create_resp.status_code == 201
+    booking_data = create_resp.get_json()["data"]
+    assert booking_data["slotNumber"] == "B1-01"
+    assert booking_data["vehiclePlate"] == "MH12ZZ9999"
+    booking_id = booking_data["id"]
+
+    # List bookings - should return frontend formatted data
+    list_resp = client.get("/bookings", headers=auth_headers)
+    assert list_resp.status_code == 200
+    assert list_resp.get_json()["success"] is True
+    assert len(list_resp.get_json()["data"]) >= 1
+
+    # Extend booking
+    ext_resp = client.post(f"/bookings/{booking_id}/extend", json={"extraHours": 2}, headers=auth_headers)
+    assert ext_resp.status_code == 200
+    assert ext_resp.get_json()["success"] is True
+
+    # Cancel booking
+    cancel_resp = client.post(f"/bookings/{booking_id}/cancel", headers=auth_headers)
+    assert cancel_resp.status_code == 200
+    assert cancel_resp.get_json()["data"]["status"] == "Cancelled"
+

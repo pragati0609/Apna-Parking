@@ -318,6 +318,53 @@ class Booking(db.Model):
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 
+    def to_frontend_dict(self):
+        space = self.parking_space
+        loc = space.location if space else None
+        v = self.vehicle
+        u = self.user
+
+        date_str = self.start_time.strftime("%Y-%m-%d") if self.start_time else ""
+        start_time_str = self.start_time.strftime("%H:%M") if self.start_time else "10:00"
+        end_time_str = self.end_time.strftime("%H:%M") if self.end_time else "12:00"
+        duration_hrs = max(1, int((self.end_time - self.start_time).total_seconds() / 3600.0)) if (self.start_time and self.end_time) else 2
+
+        year = self.created_at.year if self.created_at else 2026
+        booking_id_str = f"AP-{year}-{self.booking_id:04d}"
+
+        ui_status = "Active" if self.status in ["Confirmed", "Pending"] else self.status
+
+        slot_num = space.space_number if space else f"Slot-{self.parking_id}"
+        floor_code = space.floor if (space and space.floor) else (slot_num.split("-")[0] if "-" in slot_num else "B1")
+        plate = v.license_plate if v else "MH12AB1234"
+        parking_name = loc.location_name if loc else "City Center Parking"
+
+        return {
+            "id": booking_id_str,
+            "booking_id": self.booking_id,
+            "spotId": f"spot-{loc.location_id}" if loc else f"spot-{self.parking_id}",
+            "parkingName": parking_name,
+            "parkingAddress": loc.address if loc else "Pune, Maharashtra",
+            "slotNumber": slot_num,
+            "floor": floor_code,
+            "vehicleType": "bike" if (v and v.vehicle_type == "TwoWheeler") else "car",
+            "vehiclePlate": plate,
+            "vehicleModel": v.make_model if v else "Standard Car",
+            "customerName": u.full_name if u else "Driver",
+            "customerPhone": u.phone_number if u else "",
+            "customerEmail": u.email if u else "",
+            "date": date_str,
+            "startTime": start_time_str,
+            "endTime": end_time_str,
+            "durationHours": duration_hrs,
+            "hourlyRate": float(loc.hourly_rate) if loc else 40.0,
+            "totalAmount": float(self.total_amount),
+            "finalAmount": float(self.total_amount),
+            "status": ui_status,
+            "qrCodeData": f"APNA-PARKING-PASS|{booking_id_str}|{parking_name}|{slot_num}|{plate}|{date_str}|{start_time_str}",
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+        }
+
 
 class Cancellation(db.Model):
     __tablename__ = "Cancellations"

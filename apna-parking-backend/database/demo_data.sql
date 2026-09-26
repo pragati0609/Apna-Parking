@@ -183,3 +183,6 @@ SELECT
 FROM Bookings b
 GROUP BY DATE(b.start_time)
 ORDER BY booking_date DESC;
+
+USE ApnaParking;
+select * from users;
