@@ -49,6 +49,7 @@
       <!-- Actions -->
       <div class="header-actions">
         <div id="nav-auth-container" class="nav-auth-container">
+          <!-- Populated dynamically by main.js updateAuthUI() -->
           <button type="button" class="btn-header-auth btn-open-auth">
             🔑 Sign In
           </button>
@@ -82,7 +83,7 @@
         </ul>
       </div>
       <div class="drawer-footer">
-        <button type="button" class="btn-primary btn-open-auth" style="width: 100%;">
+        <button class="btn-primary btn-open-auth" style="width: 100%;">
           🔑 Driver Login / Register
         </button>
       </div>
@@ -508,55 +509,74 @@
   </footer>
 
 
-
-  <!-- ============================================================
-       AUTH MODAL - Login / Sign Up
-       ============================================================ -->
-  <div class="modal-overlay" id="auth-modal">
-    <div class="modal-container" style="max-width: 420px;">
-      <button class="modal-close-btn" id="auth-modal-close">✕</button>
-      <h2 class="modal-title" id="auth-modal-title">Sign In to Your Account</h2>
-      <p class="modal-subtitle" id="auth-modal-subtitle">Reserve guaranteed spots, manage passes &amp; FASTag</p>
-
-      <div class="auth-tab-bar">
-        <button type="button" class="auth-tab-btn active" id="tab-btn-login" style="color:#E11D74;border-bottom:2px solid #E11D74;">Sign In</button>
-        <button type="button" class="auth-tab-btn" id="tab-btn-signup" style="color:#64748B;border-bottom:2px solid transparent;">Create Account</button>
+  <!-- ========================================================================
+       AUTH MODAL — Sign In / Sign Up
+       main.js handles all form submissions, tab switching, and auth state.
+       ======================================================================== -->
+  <div class="modal-overlay" id="auth-modal" style="z-index: 9000;">
+    <div class="modal-container" style="max-width: 460px; padding: 0; border-radius: 20px; overflow: hidden;">
+      <!-- Modal Header -->
+      <div style="background: linear-gradient(135deg, #18091E 0%, #2D0A3E 100%); padding: 28px 32px 24px; position: relative;">
+        <button id="auth-modal-close" class="modal-close-btn" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.12); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;">✕</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <img src="/assets/images/1000150881.jpg" alt="Apna Parking" style="width: 36px; height: 36px; border-radius: 10px; object-fit: cover;" />
+          <span style="color: #fff; font-weight: 800; font-size: 1.1rem;">Apna Parking</span>
+        </div>
+        <h2 id="auth-modal-title" style="color: #fff; font-size: 1.4rem; margin: 0 0 4px 0;">Sign In to Your Account</h2>
+        <p id="auth-modal-subtitle" style="color: rgba(255,255,255,0.65); font-size: 0.86rem; margin: 0;">Reserve guaranteed spots, manage passes &amp; FASTag</p>
       </div>
 
-      <div id="auth-error-msg" class="auth-error-box" style="display:none;"></div>
+      <!-- Tab Switcher -->
+      <div style="display: flex; border-bottom: 1.5px solid #F1F5F9; background: #fff; padding: 0 32px;">
+        <button id="tab-btn-login" style="flex: 1; padding: 14px 0; background: none; border: none; border-bottom: 2px solid #E11D74; color: #E11D74; font-weight: 700; font-size: 0.92rem; cursor: pointer;">Sign In</button>
+        <button id="tab-btn-signup" style="flex: 1; padding: 14px 0; background: none; border: none; border-bottom: 2px solid transparent; color: #64748B; font-weight: 600; font-size: 0.92rem; cursor: pointer;">Create Account</button>
+      </div>
+
+      <!-- Error Message -->
+      <div id="auth-error-msg" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; padding: 10px 16px; margin: 16px 32px 0; border-radius: 10px; font-size: 0.86rem;"></div>
 
       <!-- Login Form -->
-      <form id="auth-login-form">
-        <div class="form-group-custom">
-          <label>Email Address</label>
-          <input type="email" id="login-email" class="custom-text-input" placeholder="your@email.com" required />
+      <form id="auth-login-form" style="padding: 24px 32px 32px;">
+        <div class="form-group-custom" style="margin-bottom: 16px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Email Address</label>
+          <input type="email" id="login-email" class="custom-text-input" placeholder="your@email.com" required style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div class="form-group-custom">
-          <label>Password</label>
-          <input type="password" id="login-password" class="custom-text-input" placeholder="Enter your password" required />
+        <div class="form-group-custom" style="margin-bottom: 24px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Password</label>
+          <input type="password" id="login-password" class="custom-text-input" placeholder="Min 6 characters" required style="width: 100%; box-sizing: border-box;" />
         </div>
-        <button type="submit" class="btn-primary" id="btn-submit-login" style="width:100%;margin-top:8px;">Sign In ➔</button>
+        <button type="submit" id="btn-submit-login" class="btn-primary" style="width: 100%; padding: 13px; font-size: 1rem; border: none; cursor: pointer;">
+          Sign In ➔
+        </button>
+        <p style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: #64748B;">
+          Don't have an account? <button type="button" id="tab-btn-signup-link" onclick="document.getElementById('tab-btn-signup').click()" style="background: none; border: none; color: #E11D74; font-weight: 700; cursor: pointer;">Create one here</button>
+        </p>
       </form>
 
-      <!-- Signup Form -->
-      <form id="auth-signup-form" style="display:none;">
-        <div class="form-group-custom">
-          <label>Full Name</label>
-          <input type="text" id="signup-name" class="custom-text-input" placeholder="Rahul Sharma" required />
+      <!-- Signup Form (hidden by default) -->
+      <form id="auth-signup-form" style="display: none; padding: 24px 32px 32px;">
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Full Name *</label>
+          <input type="text" id="signup-name" class="custom-text-input" placeholder="e.g. Rahul Sharma" required style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div class="form-group-custom">
-          <label>Email Address</label>
-          <input type="email" id="signup-email" class="custom-text-input" placeholder="your@email.com" required />
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Email Address *</label>
+          <input type="email" id="signup-email" class="custom-text-input" placeholder="your@email.com" required style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div class="form-group-custom">
-          <label>Phone Number</label>
-          <input type="tel" id="signup-phone" class="custom-text-input" placeholder="+91 98765 43210" />
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Phone Number</label>
+          <input type="tel" id="signup-phone" class="custom-text-input" placeholder="+91 98765 43210" style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div class="form-group-custom">
-          <label>Password</label>
-          <input type="password" id="signup-password" class="custom-text-input" placeholder="Min 6 characters" required />
+        <div class="form-group-custom" style="margin-bottom: 24px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Password *</label>
+          <input type="password" id="signup-password" class="custom-text-input" placeholder="Min 6 characters" required style="width: 100%; box-sizing: border-box;" />
         </div>
-        <button type="submit" class="btn-primary" id="btn-submit-signup" style="width:100%;margin-top:8px;">Create Account ➔</button>
+        <button type="submit" id="btn-submit-signup" class="btn-primary" style="width: 100%; padding: 13px; font-size: 1rem; border: none; cursor: pointer;">
+          Create Account ➔
+        </button>
+        <p style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: #64748B;">
+          Already registered? <button type="button" onclick="document.getElementById('tab-btn-login').click()" style="background: none; border: none; color: #E11D74; font-weight: 700; cursor: pointer;">Sign In here</button>
+        </p>
       </form>
     </div>
   </div>

@@ -1329,3 +1329,140 @@ button {
     gap: 6px;
   }
 }
+
+/* ==========================================================================
+   MODAL OVERLAY — Auth Modal, QR Ticket Modal
+   ========================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 5, 25, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 8000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.modal-overlay.is-active {
+  display: flex;
+}
+
+.modal-container {
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  position: relative;
+  margin: auto;
+}
+
+.modal-close-btn {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  color: inherit;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION SYSTEM
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  background: #18091E;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: all;
+  max-width: 360px;
+  animation: toastSlideIn 0.3s ease;
+  border-left: 3px solid #E11D74;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   NAV AUTH CONTAINER — Header auth state button area
+   ========================================================================== */
+.nav-auth-container {
+  display: flex;
+  align-items: center;
+}
+
+/* User profile badge (when logged in) */
+.user-profile-badge:hover {
+  background: rgba(225, 29, 116, 0.12) !important;
+  border-color: rgba(225, 29, 116, 0.45) !important;
+}
+
+.btn-app-logout:hover {
+  background: #FEF2F2 !important;
+  border-color: #FCA5A5 !important;
+  color: #DC2626 !important;
+}
+
+/* Input field shared style (used in auth modal and booking forms) */
+.custom-text-input,
+.custom-select-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.93rem;
+  font-family: inherit;
+  color: #18091E;
+  background: #FAFAFA;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.custom-text-input:focus,
+.custom-select-input:focus {
+  border-color: #E11D74;
+  box-shadow: 0 0 0 3px rgba(225, 29, 116, 0.12);
+  background: #ffffff;
+}
+
+.form-group-custom label {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 6px;
+}

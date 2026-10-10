@@ -1,0 +1,547 @@
+/* ==========================================================================
+   APNA PARKING - MODERN PINK & WHITE HEADER & NAVIGATION STYLES
+   High-contrast, sleek velvet night with vibrant pink brand accents
+   ========================================================================== */
+
+:root {
+  --header-height: 74px;
+  --header-bg: #140518;
+  --header-border: rgba(225, 29, 116, 0.22);
+  --header-text: #FFF5F9;
+  --header-text-muted: #A89CAE;
+  --accent-pink: #E11D74;
+  --accent-pink-hover: #BE123C;
+  --accent-pink-light: #FFF0F6;
+  --accent-emerald: #10B981;
+}
+
+/* Header Container - Floating Solid */
+.ap-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 1100px;
+  height: 60px;
+  background: #0C1020;
+  border: 1px solid rgba(225, 29, 116, 0.25);
+  border-radius: 9999px;
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.55);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.ap-header.scrolled {
+  background: #0D0310;
+  box-shadow: 0 14px 40px -5px rgba(0, 0, 0, 0.7);
+  border-color: rgba(225, 29, 116, 0.35);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px 0 18px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Brand Logo */
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  user-select: none;
+}
+
+.logo-badge {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #BE123C 0%, #E11D74 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(225, 29, 116, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.25rem;
+  overflow: hidden;
+}
+
+.logo-badge svg {
+  width: 24px;
+  height: 24px;
+  color: #FFFFFF;
+}
+
+.logo-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.brand-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.brand-name span,
+.brand-name .brand-highlight {
+  color: #FF4081;
+  font-weight: 700;
+}
+
+.brand-city-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(225, 29, 116, 0.12);
+  border: 1px solid rgba(225, 29, 116, 0.25);
+  color: #FCE7F3;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Desktop Navigation Links */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  color: var(--header-text-muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #FFFFFF;
+  background: rgba(225, 29, 116, 0.16);
+}
+
+.nav-link.radar-badge {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #34D399;
+}
+
+.nav-link.radar-badge:hover {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+}
+
+.nav-link.radar-badge .live-dot {
+  width: 7px;
+  height: 7px;
+  background: #10B981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulse-emerald 1.6s infinite;
+}
+
+@keyframes pulse-emerald {
+  0% { transform: scale(0.95); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 12px #10B981; }
+  100% { transform: scale(0.95); opacity: 0.9; }
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-helpline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #A89CAE;
+  font-weight: 600;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(225, 29, 116, 0.15);
+}
+
+.header-helpline strong {
+  color: #FFF5F9;
+}
+
+.btn-talk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(225, 29, 116, 0.3);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.btn-talk:hover {
+  background: rgba(225, 29, 116, 0.22);
+  border-color: #FF4081;
+  transform: translateY(-1px);
+}
+
+.btn-header-auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+}
+
+.btn-header-auth:hover {
+  background: var(--accent-pink);
+  border-color: var(--accent-pink);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(225, 29, 116, 0.4);
+}
+
+.btn-header-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: var(--accent-pink);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(225, 29, 116, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.btn-header-book:hover {
+  background: var(--accent-pink-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(225, 29, 116, 0.55);
+}
+
+/* Hamburger Toggle Button */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 38px;
+  height: 38px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(225, 29, 116, 0.25);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 1050;
+}
+
+.hamburger-btn:hover {
+  background: rgba(225, 29, 116, 0.2);
+}
+
+.hamburger-btn span {
+  width: 100%;
+  height: 2px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-btn.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ==========================================================================
+   OFF-CANVAS SLIDE-OVER DRAWER MENU (PINK & WHITE)
+   ========================================================================== */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 5, 22, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.drawer-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer-panel {
+  position: fixed;
+  top: 0;
+  right: -380px;
+  width: 360px;
+  max-width: 90vw;
+  height: 100%;
+  background: #140518;
+  color: #FFF5F9;
+  box-shadow: -8px 0 35px rgba(0, 0, 0, 0.55);
+  z-index: 1200;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-left: 1px solid rgba(225, 29, 116, 0.22);
+}
+
+.drawer-backdrop.is-open .drawer-panel {
+  right: 0;
+}
+
+.drawer-header {
+  padding: 22px 24px;
+  background: #0E0312;
+  border-bottom: 1px solid rgba(225, 29, 116, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #FFFFFF;
+}
+
+.drawer-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(225, 29, 116, 0.3);
+}
+
+.drawer-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.drawer-quick-cta {
+  background: linear-gradient(135deg, rgba(225, 29, 116, 0.16) 0%, rgba(190, 18, 60, 0.26) 100%);
+  border: 1px solid rgba(225, 29, 116, 0.35);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-quick-cta h4 {
+  font-size: 0.95rem;
+  color: #FF65A3;
+  margin: 0;
+  font-weight: 700;
+}
+
+.drawer-quick-cta p {
+  font-size: 0.82rem;
+  color: #A89CAE;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.drawer-cta-btn {
+  background: var(--accent-pink);
+  color: #FFFFFF;
+  padding: 9px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.drawer-cta-btn:hover {
+  background: var(--accent-pink-hover);
+}
+
+.drawer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer-nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  color: #CBD5E1;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.drawer-nav-item a:hover,
+.drawer-nav-item a.active {
+  background: rgba(225, 29, 116, 0.16);
+  color: #FFFFFF;
+  transform: translateX(4px);
+}
+
+.drawer-nav-item .item-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-pink);
+}
+
+.drawer-divider {
+  height: 1px;
+  background: rgba(225, 29, 116, 0.15);
+  margin: 6px 0;
+}
+
+.drawer-footer {
+  padding: 20px;
+  background: #0E0312;
+  border-top: 1px solid rgba(225, 29, 116, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.drawer-helpline {
+  font-size: 0.84rem;
+  color: #A89CAE;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-helpline strong {
+  color: #FFF5F9;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .header-helpline {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .ap-header {
+    width: calc(100% - 24px);
+    top: 10px;
+    height: 56px;
+    border-radius: 16px;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-city-badge {
+    display: none;
+  }
+  .btn-header-book {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+  }
+}

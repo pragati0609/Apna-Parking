@@ -1,0 +1,25 @@
+{
+  "name": "apna-parking",
+  "version": "1.0.0",
+  "description": "Apna Parking - Professional Smart Parking & Live Map Full-Stack Web Application",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "parking",
+    "smart-parking",
+    "live-map",
+    "geolocation",
+    "mern",
+    "express"
+  ],
+  "author": "Apna Parking",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

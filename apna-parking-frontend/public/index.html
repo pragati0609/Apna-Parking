@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apna Parking - Smart Parking in India, Simplified</title>
+  <meta name="description" content="Find and book guaranteed parking spots in malls, metro stations, and commercial hubs. Instant QR entry, real-time bays, transparent rates." />
+
+  <!-- Google Fonts & Leaflet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Clean Stylesheets -->
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/map.css" />
+  <link rel="stylesheet" href="/css/booking.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ==========================================================================
+       HEADER & NAVIGATION (Clean & Simple)
+       ========================================================================== -->
+  <header class="ap-header">
+    <div class="header-inner">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="brand-logo-link">
+        <div class="logo-badge">
+          <img src="/assets/images/1000150881.jpg" alt="Apna Parking Logo" />
+        </div>
+        <div class="brand-name">
+          Apna<span class="brand-highlight">Parking</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav">
+        <ul class="nav-links">
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="/find-parking.html" class="nav-link">Live Radar</a></li>
+          <li><a href="#why-us" class="nav-link">Why Us</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        </ul>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <div id="nav-auth-container" class="nav-auth-container">
+          <!-- Populated dynamically by main.js updateAuthUI() -->
+          <button type="button" class="btn-header-auth btn-open-auth">
+            🔑 Sign In
+          </button>
+        </div>
+        <button class="hamburger-btn" id="hamburger-toggle-btn" aria-label="Open Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer-backdrop" id="app-drawer-backdrop">
+    <aside class="drawer-panel" id="app-drawer-panel">
+      <div class="drawer-header">
+        <div class="drawer-logo">
+          <img src="/assets/images/1000150881.jpg" style="width:28px;height:28px;border-radius:8px;object-fit:cover;" alt="Logo" />
+          <span>Apna Parking</span>
+        </div>
+        <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Menu">✕</button>
+      </div>
+      <div class="drawer-body">
+        <ul class="drawer-nav-list">
+          <li class="drawer-nav-item"><a href="#how-it-works"><i data-lucide="compass" class="item-icon"></i> How It Works</a></li>
+          <li class="drawer-nav-item"><a href="#why-us"><i data-lucide="shield-check" class="item-icon"></i> Why Us</a></li>
+          <li class="drawer-nav-item"><a href="#live-map"><i data-lucide="map" class="item-icon"></i> Live Map</a></li>
+          <li class="drawer-nav-item"><a href="#pricing"><i data-lucide="tag" class="item-icon"></i> Pricing Plans</a></li>
+        </ul>
+      </div>
+      <div class="drawer-footer">
+        <button class="btn-primary btn-open-auth" style="width: 100%;">
+          🔑 Driver Login / Register
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==========================================================================
+       HERO SECTION - CENTERED & MINIMALIST
+       ========================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content-center hero-faded-box">
+        
+        <h1 class="hero-title">
+          Parking in India, <span>simplified.</span>
+        </h1>
+
+        <!-- Single Clean Search Input (Centered) -->
+        <form class="hero-search-card" id="hero-search-form">
+          <div class="hero-search-input-wrap">
+            <i data-lucide="map-pin" style="width:20px;height:20px;color:#E11D74;"></i>
+            <input 
+              type="text" 
+              id="hero-search-input" 
+              placeholder="Enter mall, area or landmark (e.g. FC Road, Phoenix" 
+              required 
+            />
+          </div>
+          <button type="submit" class="hero-search-btn">
+            <span>Find Parking</span>
+            <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </button>
+        </form>
+
+        <!-- Quick Trending Tags (Centered) -->
+        <div class="hero-trending">
+          <span class="trending-label">Popular:</span>
+          <span class="trending-pill" onclick="document.getElementById('hero-search-input').value='FC Road, Pune';">FC Road</span>
+          <span class="trending-pill" onclick="document.getElementById('hero-search-input').value='Phoenix Marketcity, Pune';">Phoenix Mall</span>
+          <span class="trending-pill" onclick="document.getElementById('hero-search-input').value='BKC, Mumbai';">BKC Mumbai</span>
+          <span class="trending-pill" onclick="document.getElementById('hero-search-input').value='Cyber City, Gurugram';">Cyber City</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scroll down indicator to How It Works -->
+    <a href="#how-it-works" class="hero-scroll-cue" id="hero-scroll-cue" aria-label="Scroll to How It Works">
+      <span>HOW IT WORKS</span>
+      <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+    </a>
+  </section>
+
+  <!-- ==========================================================================
+       HOW IT WORKS (MODERN INTERACTIVE TIMELINE)
+       ========================================================================== -->
+  <!-- ==========================================================================
+       HOW IT WORKS (FLOWCHART WAVE TIMELINE THEME)
+       ========================================================================== -->
+  <section class="section-padding how-flowchart-section" id="how-it-works">
+    <div class="container">
+      
+      <div class="section-header dark-header">
+        <h2 class="section-title text-white">How It <span class="highlight-flow">Works</span></h2>
+        <p class="section-subtitle text-muted-dark">Your seamless step-by-step journey from search to guaranteed parking.</p>
+      </div>
+
+    </div>
+
+    <!-- Full-width Flowchart Stage (Touches both ends of the screen) -->
+    <div class="flowchart-fullwidth-stage">
+
+      <!-- 1. Sinusoidal Wave Track SVG with Contour Lines (Touches both ends of screen) -->
+      <div class="flowchart-wave-container">
+        <svg class="flowchart-wave-svg" viewBox="0 0 1200 190" preserveAspectRatio="none">
+          <defs>
+            <!-- Smooth Pink Gradient Fading to 100% Transparent into Background -->
+            <linearGradient id="waveGreyFadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#E11D74" stop-opacity="0.16" />
+              <stop offset="35%" stop-color="#FF4081" stop-opacity="0.08" />
+              <stop offset="70%" stop-color="#BE123C" stop-opacity="0.02" />
+              <stop offset="100%" stop-color="#100314" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="activeNodeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF4081" />
+              <stop offset="100%" stop-color="#E11D74" />
+            </linearGradient>
+          </defs>
+
+          <!-- Shaded Area Under Wave fading into background -->
+          <path d="M 0,75 C 80,45 160,45 240,45 C 360,45 480,110 600,110 C 720,110 840,45 960,45 C 1040,45 1120,45 1200,75 L 1200,190 L 0,190 Z" fill="url(#waveGreyFadeGrad)" />
+
+          <!-- Contour Lines (Layered Sinusoidal Curves) -->
+          <path d="M 0,65 C 80,35 160,35 240,35 C 360,35 480,100 600,100 C 720,100 840,35 960,35 C 1040,35 1120,35 1200,65" fill="none" stroke="rgba(244,114,182,0.12)" stroke-width="1.5" />
+          <path d="M 0,70 C 80,40 160,40 240,40 C 360,40 480,105 600,105 C 720,105 840,40 960,40 C 1040,40 1120,40 1200,70" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" />
+          
+          <!-- Main Crest Wave Line (Touches both ends of the screen at x=0 and x=1200) -->
+          <path id="howWaveCrestPath" d="M 0,75 C 80,45 160,45 240,45 C 360,45 480,110 600,110 C 720,110 840,45 960,45 C 1040,45 1120,45 1200,75" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" />
+
+          <!-- Lower Parallel Contour Lines -->
+          <path d="M 0,82 C 80,52 160,52 240,52 C 360,52 480,117 600,117 C 720,117 840,52 960,52 C 1040,52 1120,52 1200,82" fill="none" stroke="rgba(225,29,116,0.18)" stroke-width="1.5" />
+          <path d="M 0,89 C 80,59 160,59 240,59 C 360,59 480,124 600,124 C 720,124 840,59 960,59 C 1040,59 1120,59 1200,89" fill="none" stroke="rgba(225,29,116,0.08)" stroke-width="1.5" />
+
+          <!-- Dotted Vertical Grid Lines connecting from Nodes Downwards all the way to touch Cards at y=190 -->
+          <line id="flowStem1" x1="240" y1="45" x2="240" y2="190" stroke="#F472B6" stroke-width="2" stroke-dasharray="3 4" opacity="0.85" />
+          <line id="flowStem2" x1="600" y1="110" x2="600" y2="190" stroke="#FF4081" stroke-width="2" stroke-dasharray="3 4" opacity="0.85" />
+          <line id="flowStem3" x1="960" y1="45" x2="960" y2="190" stroke="#E11D74" stroke-width="2" stroke-dasharray="3 4" opacity="0.9" />
+
+          <!-- Node 1 (Peak 1 - Soft Rose #F472B6) -->
+          <g class="flowchart-node-group" id="flowNodeGroup1">
+            <circle id="flowRipple1" cx="240" cy="45" r="7" fill="none" stroke="#F472B6" stroke-width="1.8">
+              <animate attributeName="r" values="7; 22" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8; 0" dur="2s" repeatCount="indefinite" />
+            </circle>
+            <circle id="flowDot1" cx="240" cy="45" r="7" fill="#F472B6" />
+          </g>
+
+          <!-- Node 2 (Valley - Vibrant Bright Pink #FF4081) -->
+          <g class="flowchart-node-group" id="flowNodeGroup2">
+            <circle id="flowRipple2" cx="600" cy="110" r="7" fill="none" stroke="#FF4081" stroke-width="1.8">
+              <animate attributeName="r" values="7; 22" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8; 0" dur="2s" repeatCount="indefinite" />
+            </circle>
+            <circle id="flowDot2" cx="600" cy="110" r="7" fill="#FF4081" />
+          </g>
+
+          <!-- Node 3 (Peak 2 - Electric Brand Pink #E11D74) -->
+          <g class="flowchart-node-group" id="flowNodeGroup3">
+            <circle id="flowRipple3" cx="960" cy="45" r="8" fill="none" stroke="#E11D74" stroke-width="2">
+              <animate attributeName="r" values="8; 24" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.9; 0" dur="2s" repeatCount="indefinite" />
+            </circle>
+            <circle id="flowDot3" cx="960" cy="45" r="8" fill="#E11D74" />
+          </g>
+        </svg>
+
+        <!-- Milestone Step Pill Badges on the Wave Nodes -->
+        <div class="flowchart-wave-pills">
+          <div class="wave-node-pill pill-pos-1" id="flowPill1">
+            <span>Step 01</span>
+          </div>
+          <div class="wave-node-pill pill-pos-2" id="flowPill2">
+            <span>Step 02</span>
+          </div>
+          <div class="wave-node-pill pill-pos-3 active-pill" id="flowPill3">
+            <span>Step 03</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Content Milestone Cards Grid (BELOW CURVE, ALIGNED EXACTLY WITH STEMS) -->
+      <div class="flowchart-cards-grid">
+        
+        <!-- Milestone 1 -->
+        <div class="flowchart-milestone milestone-1" id="flowCard1">
+          <div class="flowchart-card">
+            <span class="flowchart-tag-pill">Live Availability</span>
+            <h3 class="flowchart-step-title">Search Nearby</h3>
+            <p class="flowchart-step-desc">
+              Find open spots and transparent hourly rates near your destination in real time.
+            </p>
+            <div class="flowchart-meta-row">
+              <i data-lucide="check" style="width:14px;height:14px;color:#F472B6;"></i>
+              <span>500+ Verified Locations</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 2 (In Valley) -->
+        <div class="flowchart-milestone milestone-2" id="flowCard2">
+          <div class="flowchart-card">
+            <span class="flowchart-tag-pill">Guaranteed Bay</span>
+            <h3 class="flowchart-step-title">Reserve Your Slot</h3>
+            <p class="flowchart-step-desc">
+              Lock your exact bay in one tap. Your space is guaranteed empty when you arrive.
+            </p>
+            <div class="flowchart-meta-row">
+              <i data-lucide="check" style="width:14px;height:14px;color:#FF4081;"></i>
+              <span>Free Cancellation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 3 (Active / Peak) -->
+        <div class="flowchart-milestone milestone-3 is-active" id="flowCard3">
+          <div class="flowchart-card">
+            <span class="flowchart-tag-pill">Contactless Entry</span>
+            <h3 class="flowchart-step-title">Drive In & Park</h3>
+            <p class="flowchart-step-desc">
+              Glide past the boom barrier automatically with FASTag or a quick QR scan.
+            </p>
+            <div class="flowchart-meta-row">
+              <i data-lucide="check" style="width:14px;height:14px;color:#E11D74;"></i>
+              <span>Zero Cash, Zero Waiting</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       LIVE MAP & NEARBY PARKING (CLEAN & MINIMAL)
+       ========================================================================== -->
+  <section class="section-padding map-section" id="live-map">
+    <div class="container">
+      
+      <div class="section-header">
+        <h2 class="section-title">Live <span>Map</span></h2>
+        <p class="section-subtitle">Real-time parking spots and available bays near you.</p>
+      </div>
+
+      <div class="map-card-wrapper">
+        
+        <!-- Minimal Toolbar -->
+        <div class="map-toolbar-clean">
+          <div class="map-chips-clean">
+            <button type="button" class="map-chip-btn home-veh-chip active" data-type="all">All Vehicles</button>
+            <button type="button" class="map-chip-btn home-veh-chip" data-type="car">Cars</button>
+            <button type="button" class="map-chip-btn home-veh-chip" data-type="bike">Bikes</button>
+            <button type="button" class="map-chip-btn home-veh-chip" data-type="ev">EV Charging</button>
+          </div>
+
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-secondary" style="padding: 7px 16px; font-size: 0.85rem;" id="btn-hero-gps" onclick="window.activeMapController?.detectUserLocation()">
+              <i data-lucide="crosshair" style="width:14px;height:14px;"></i> Near Me
+            </button>
+            <a href="/find-parking.html" class="btn-primary" style="padding: 7px 16px; font-size: 0.85rem;">
+              Fullscreen Map
+            </a>
+          </div>
+        </div>
+
+        <!-- Split Map + Spots -->
+        <div class="map-split-clean">
+          <div class="map-frame-box">
+            <div id="home-live-map"></div>
+          </div>
+          <div class="map-spots-scroll" id="home-nearby-spots-list">
+            <div style="padding: 30px; text-align: center; color: #94A3B8;">
+              Loading nearest parking spaces...
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       WHY APNA PARKING (LUXURY GLOW CARD DESIGN - REFERENCE MATCH)
+       ========================================================================== -->
+  <section class="section-padding benefits-section" id="why-us">
+    <div class="container">
+      
+      <div class="section-header dark-header">
+        <h2 class="section-title text-white">Why Drivers Choose <span class="highlight-flow">Apna Parking</span></h2>
+        <p class="section-subtitle text-muted-dark">Designed to eliminate everyday parking frustration in urban India.</p>
+      </div>
+
+      <div class="benefits-grid">
+        
+        <!-- Card 1: Guaranteed Spot -->
+        <div class="driver-feature-card">
+          <div class="driver-card-header">
+            <div class="driver-card-tier-wrap">
+              <i data-lucide="shield-check" class="driver-tier-icon"></i>
+              <span class="driver-card-tier">Guaranteed Spot</span>
+            </div>
+            <span class="driver-card-badge">100% LOCK</span>
+          </div>
+
+          <div class="driver-card-metric">
+            <span class="metric-val">100</span><span class="metric-symbol">%</span>
+          </div>
+          <div class="driver-card-sublabel">RESERVED BAY</div>
+
+          <p class="driver-card-desc">
+            Never arrive to a "Full" board. Your reserved space is locked for your vehicle plate.
+          </p>
+
+          <span class="driver-card-footnote">Exclusive License Plate Binding</span>
+        </div>
+
+        <!-- Card 2: FASTag & QR Access -->
+        <div class="driver-feature-card">
+          <div class="driver-card-header">
+            <div class="driver-card-tier-wrap">
+              <i data-lucide="zap" class="driver-tier-icon"></i>
+              <span class="driver-card-tier">FASTag & QR Entry</span>
+            </div>
+            <span class="driver-card-badge">FASTAG / QR</span>
+          </div>
+
+          <div class="driver-card-metric">
+            <span class="metric-val">0</span><span class="metric-symbol">sec</span>
+          </div>
+          <div class="driver-card-sublabel">BARRIER DELAY</div>
+
+          <p class="driver-card-desc">
+            Glide past boom barriers with FASTag or QR. Zero paper slips, zero cash friction.
+          </p>
+
+          <span class="driver-card-footnote">FASTag & WhatsApp QR Supported</span>
+        </div>
+
+        <!-- Card 3: Fixed Pricing -->
+        <div class="driver-feature-card">
+          <div class="driver-card-header">
+            <div class="driver-card-tier-wrap">
+              <i data-lucide="indian-rupee" class="driver-tier-icon"></i>
+              <span class="driver-card-tier">Transparent Rates</span>
+            </div>
+            <span class="driver-card-badge">ZERO SURGE</span>
+          </div>
+
+          <div class="driver-card-metric">
+            <span class="metric-symbol">₹</span><span class="metric-val">30</span>
+          </div>
+          <div class="driver-card-sublabel">PER HOUR BASE</div>
+
+          <p class="driver-card-desc">
+            Transparent pricing starting from ₹30/hr. Official GST invoices for corporate claims.
+          </p>
+
+          <span class="driver-card-footnote">Zero Surge • Billed Per Minute</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SIMPLE TARIFF
+       ========================================================================== -->
+  <section class="section-padding tariff-section" id="pricing">
+    <div class="container">
+      
+      <div class="section-header">
+        <h2 class="section-title">Transparent <span>Tariffs</span></h2>
+        <p class="section-subtitle">Pay by the hour or save with commuter passes.</p>
+      </div>
+
+      <div class="tariff-grid">
+        
+        <div class="tariff-card">
+          <div>
+            <h3 class="tariff-title">Hourly</h3>
+            <div class="tariff-price">₹30-50 <span>/hour</span></div>
+            <ul class="tariff-list">
+              <li><i data-lucide="check"></i> Live map reservation</li>
+              <li><i data-lucide="check"></i> Instant digital QR pass</li>
+              <li><i data-lucide="check"></i> Free cancellation</li>
+            </ul>
+          </div>
+          <a href="/find-parking.html" class="btn-secondary" style="width:100%;">Find Spot</a>
+        </div>
+
+        <div class="tariff-card featured">
+          <div>
+            <h3 class="tariff-title">Daily Pass</h3>
+            <div class="tariff-price">₹299 <span>/day</span></div>
+            <ul class="tariff-list">
+              <li><i data-lucide="check"></i> Full day reserved bay (12 hrs)</li>
+              <li><i data-lucide="check"></i> Multiple in-and-out privileges</li>
+              <li><i data-lucide="check"></i> Covered basement spot</li>
+            </ul>
+          </div>
+          <a href="/book-slot.html" class="btn-primary" style="width:100%;">Get Daily Pass</a>
+        </div>
+
+        <div class="tariff-card">
+          <div>
+            <h3 class="tariff-title">Monthly Pass</h3>
+            <div class="tariff-price">₹2,499 <span>/month</span></div>
+            <ul class="tariff-list">
+              <li><i data-lucide="check"></i> Fixed dedicated bay</li>
+              <li><i data-lucide="check"></i> Automated FASTag entry</li>
+              <li><i data-lucide="check"></i> GST invoice for reimbursement</li>
+            </ul>
+          </div>
+          <a href="/book-slot.html" class="btn-secondary" style="width:100%;">Get Monthly Pass</a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================================================
+       CLEAN MINIMAL FOOTER
+       ========================================================================== -->
+  <footer class="ap-footer-simple">
+    <div class="container">
+      
+      <div class="footer-simple-grid">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i data-lucide="parking-circle" style="width:24px;height:24px;color:#FF4081;"></i>
+          <span style="font-weight:700; color:#FFFFFF; font-size:1.1rem;">Apna Parking</span>
+          <span style="color:#64748B; font-size:0.85rem; margin-left:8px;">• India's Smart Parking Network</span>
+        </div>
+
+        <div class="footer-nav-simple">
+          <a href="/find-parking.html">Live Map</a>
+          <a href="/book-slot.html">Book Slot</a>
+          <a href="/my-bookings.html">My Passes</a>
+          <a href="/talk-to-us.html">Partner</a>
+          <a href="tel:+919876543210">+91 98765 43210</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-simple">
+        <p>© 2026 Apna Parking India Private Limited. All rights reserved.</p>
+        <p>Built for effortless urban mobility.</p>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================================================
+       AUTH MODAL — Sign In / Sign Up
+       main.js handles all form submissions, tab switching, and auth state.
+       ======================================================================== -->
+  <div class="modal-overlay" id="auth-modal" style="z-index: 9000;">
+    <div class="modal-container" style="max-width: 460px; padding: 0; border-radius: 20px; overflow: hidden;">
+      <!-- Modal Header -->
+      <div style="background: linear-gradient(135deg, #18091E 0%, #2D0A3E 100%); padding: 28px 32px 24px; position: relative;">
+        <button id="auth-modal-close" class="modal-close-btn" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.12); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;">✕</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <img src="/assets/images/1000150881.jpg" alt="Apna Parking" style="width: 36px; height: 36px; border-radius: 10px; object-fit: cover;" />
+          <span style="color: #fff; font-weight: 800; font-size: 1.1rem;">Apna Parking</span>
+        </div>
+        <h2 id="auth-modal-title" style="color: #fff; font-size: 1.4rem; margin: 0 0 4px 0;">Sign In to Your Account</h2>
+        <p id="auth-modal-subtitle" style="color: rgba(255,255,255,0.65); font-size: 0.86rem; margin: 0;">Reserve guaranteed spots, manage passes &amp; FASTag</p>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div style="display: flex; border-bottom: 1.5px solid #F1F5F9; background: #fff; padding: 0 32px;">
+        <button id="tab-btn-login" style="flex: 1; padding: 14px 0; background: none; border: none; border-bottom: 2px solid #E11D74; color: #E11D74; font-weight: 700; font-size: 0.92rem; cursor: pointer;">Sign In</button>
+        <button id="tab-btn-signup" style="flex: 1; padding: 14px 0; background: none; border: none; border-bottom: 2px solid transparent; color: #64748B; font-weight: 600; font-size: 0.92rem; cursor: pointer;">Create Account</button>
+      </div>
+
+      <!-- Error Message -->
+      <div id="auth-error-msg" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; padding: 10px 16px; margin: 16px 32px 0; border-radius: 10px; font-size: 0.86rem;"></div>
+
+      <!-- Login Form -->
+      <form id="auth-login-form" style="padding: 24px 32px 32px;">
+        <div class="form-group-custom" style="margin-bottom: 16px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Email Address</label>
+          <input type="email" id="login-email" class="custom-text-input" placeholder="your@email.com" required style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div class="form-group-custom" style="margin-bottom: 24px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Password</label>
+          <input type="password" id="login-password" class="custom-text-input" placeholder="Min 6 characters" required style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <button type="submit" id="btn-submit-login" class="btn-primary" style="width: 100%; padding: 13px; font-size: 1rem; border: none; cursor: pointer;">
+          Sign In ➔
+        </button>
+        <p style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: #64748B;">
+          Don't have an account? <button type="button" id="tab-btn-signup-link" onclick="document.getElementById('tab-btn-signup').click()" style="background: none; border: none; color: #E11D74; font-weight: 700; cursor: pointer;">Create one here</button>
+        </p>
+      </form>
+
+      <!-- Signup Form (hidden by default) -->
+      <form id="auth-signup-form" style="display: none; padding: 24px 32px 32px;">
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Full Name *</label>
+          <input type="text" id="signup-name" class="custom-text-input" placeholder="e.g. Rahul Sharma" required style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Email Address *</label>
+          <input type="email" id="signup-email" class="custom-text-input" placeholder="your@email.com" required style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div class="form-group-custom" style="margin-bottom: 14px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Phone Number</label>
+          <input type="tel" id="signup-phone" class="custom-text-input" placeholder="+91 98765 43210" style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div class="form-group-custom" style="margin-bottom: 24px;">
+          <label style="font-size: 0.83rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px;">Password *</label>
+          <input type="password" id="signup-password" class="custom-text-input" placeholder="Min 6 characters" required style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <button type="submit" id="btn-submit-signup" class="btn-primary" style="width: 100%; padding: 13px; font-size: 1rem; border: none; cursor: pointer;">
+          Create Account ➔
+        </button>
+        <p style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: #64748B;">
+          Already registered? <button type="button" onclick="document.getElementById('tab-btn-login').click()" style="background: none; border: none; color: #E11D74; font-weight: 700; cursor: pointer;">Sign In here</button>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/booking.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      if (typeof ParkingMapController !== 'undefined') {
+        window.activeMapController = new ParkingMapController('home-live-map', {
+          defaultZoom: 13
+        });
+      }
+    });
+  </script>
+</body>
+</html>
