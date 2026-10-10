@@ -1,0 +1,1331 @@
+/* ==========================================================================
+   APNA PARKING - MODERN PINK & WHITE THEME STYLESHEET
+   Clean, high-trust, spacious, luxurious pink & white brand experience
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
+
+:root {
+  /* Clean Pink & White Brand Palette */
+  --primary: #E11D74;
+  --primary-hover: #BE123C;
+  --primary-active: #9D174D;
+  --primary-light: #FFF0F6;
+  --primary-subtle: #FFF5F9;
+  --primary-border: #FBCFE8;
+  
+  --accent-pink: #FF4081;
+  --accent-rose: #FB7185;
+  --accent-deep: #9D174D;
+  
+  --emerald: #10B981;
+  --emerald-light: #ECFDF5;
+  
+  /* Neutral & White Surfaces */
+  --bg-main: #FFFFFF;
+  --bg-subtle: #FFF9FA;
+  --bg-card: #FFFFFF;
+  --bg-dark: #120516;
+  --bg-dark-card: #1C0822;
+  
+  /* Borders */
+  --border-light: #F3E8EE;
+  --border-subtle: #FDF2F8;
+  --border-pink: #FBCFE8;
+  --border-pink-bold: #F472B6;
+
+  /* Typography */
+  --text-heading: #18091E;
+  --text-body: #4A4050;
+  --text-muted: #7E7085;
+  --text-light: #A89CAE;
+  
+  /* Soft Pink Glow Shadows */
+  --shadow-sm: 0 1px 3px rgba(225, 29, 116, 0.05);
+  --shadow-md: 0 4px 18px -2px rgba(225, 29, 116, 0.09);
+  --shadow-lg: 0 14px 34px -4px rgba(225, 29, 116, 0.12);
+  --shadow-brand: 0 4px 18px rgba(225, 29, 116, 0.35);
+  --shadow-pink: 0 8px 24px rgba(225, 29, 116, 0.28);
+  
+  /* Gradients */
+  --header-gradient: linear-gradient(135deg, #BE123C 0%, #E11D74 100%);
+  --pink-gradient: linear-gradient(135deg, #E11D74 0%, #FF4081 100%);
+  
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+}
+
+/* Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-body);
+  background-color: var(--bg-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-heading);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+/* Minimal Badge */
+.badge-pill,
+.badge-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--border-pink);
+}
+
+.badge-green {
+  background: var(--emerald-light);
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+/* Clean Section Header */
+.section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 50px auto;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: var(--text-heading);
+  margin-top: 12px;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.section-title span {
+  color: var(--primary);
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* Primary Button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: #FFFFFF !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px rgba(225, 29, 116, 0.28);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(225, 29, 116, 0.38);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: #FFFFFF;
+  color: var(--text-heading);
+  border: 1px solid var(--border-light);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-light);
+  border-color: var(--border-pink);
+  color: var(--primary);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--border-pink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+
+/* ==========================================================================
+   HERO SECTION - FULLSCREEN (100VH) & CENTERED WITH NEW BACK.JPG
+   ========================================================================== */
+.hero-section {
+  min-height: 100vh;
+  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 30px 20px;
+  background-image: url('/assets/images/new%20back.jpg');
+  background-image: url('/assets/images/new back.jpg');
+  background-position: center bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hero-content-center {
+  max-width: 820px;
+  width: 100%;
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 0 16px;
+  z-index: 2;
+  position: relative;
+  transform: translateY(-50px);
+}
+
+@media (max-width: 768px) {
+  .hero-content-center {
+    transform: translateY(-20px);
+  }
+}
+
+/* Floating Clean Layout matching Mockup (No opaque white box obscuring background) */
+.hero-faded-box {
+  position: relative;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.hero-faded-box::before {
+  display: none !important;
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #64748B;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 14px 4px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(225, 29, 116, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  animation: hero-cue-bounce 2.2s infinite ease-in-out;
+}
+
+.hero-scroll-cue:hover {
+  color: var(--primary);
+  border-color: #F472B6;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(225, 29, 116, 0.22);
+}
+
+.hero-scroll-cue i,
+.hero-scroll-cue svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.hero-scroll-cue:hover i,
+.hero-scroll-cue:hover svg {
+  transform: translateY(2px);
+}
+
+@keyframes hero-cue-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(4px); }
+}
+
+.hero-title {
+  font-size: clamp(2.16rem, 4.32vw, 3.42rem);
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -1.2px;
+  line-height: 1.16;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    white-space: normal;
+  }
+}
+
+.hero-title span {
+  color: #E11D74;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+}
+
+/* Single Elegant Search Bar (Centered Pill) with Crisp Pink Accent Border */
+.hero-search-card {
+  background: #FFFFFF;
+  border: 2px solid #E11D74;
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.12), 0 4px 16px rgba(225, 29, 116, 0.18);
+  padding: 7px 8px 7px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.25s ease;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.hero-search-card:hover {
+  border-color: #BE123C;
+  box-shadow: 0 14px 40px -4px rgba(15, 23, 42, 0.14), 0 6px 22px rgba(225, 29, 116, 0.25);
+}
+
+.hero-search-card:focus-within {
+  border-color: #E11D74;
+  box-shadow: 0 0 0 4px rgba(225, 29, 116, 0.2), 0 16px 40px rgba(15, 23, 42, 0.14);
+}
+
+.hero-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-search-input-wrap i,
+.hero-search-input-wrap svg {
+  color: var(--primary);
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.hero-search-input-wrap input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.02rem;
+  color: #0F172A;
+  outline: none;
+  font-weight: 500;
+}
+
+.hero-search-input-wrap input::placeholder {
+  color: #64748B;
+  font-weight: 400;
+}
+
+.hero-search-btn {
+  background: var(--primary);
+  color: #FFFFFF;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(225, 29, 116, 0.35);
+}
+
+.hero-search-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(225, 29, 116, 0.45);
+}
+
+/* Trending Tags (Centered) */
+.hero-trending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #64748B;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.hero-trending .trending-label,
+.hero-trending > span:first-child {
+  font-weight: 500;
+  color: #64748B;
+}
+
+/* Modern Translucent Rounded Tags with Pink Hover */
+.trending-pill {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #334155;
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  padding: 5px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.86rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  user-select: none;
+}
+
+.trending-pill:hover {
+  background: #FFF0F6;
+  color: var(--primary);
+  border-color: #F472B6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 29, 116, 0.18);
+}
+
+/* ==========================================================================
+   HOW IT WORKS - FLOWCHART WAVE TIMELINE THEME (PINK PROGRESSION)
+   ========================================================================== */
+.how-flowchart-section {
+  scroll-margin-top: 80px;
+  background: #100314;
+  background: radial-gradient(circle at 50% 15%, #240929 0%, #100314 85%);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(225, 29, 116, 0.15);
+  border-bottom: 1px solid rgba(225, 29, 116, 0.15);
+  padding: 40px 0 85px 0;
+  width: 100%;
+}
+
+.dark-header {
+  margin-bottom: 22px;
+}
+
+.text-white {
+  color: #FFFFFF !important;
+}
+
+.text-muted-dark {
+  color: #A89CAE !important;
+}
+
+.highlight-flow {
+  color: var(--accent-pink) !important;
+}
+
+/* Full-width stage touching both ends of the screen */
+.flowchart-fullwidth-stage {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sinusoidal Wave SVG Container (TOUCHES BOTH ENDS OF THE SCREEN) */
+.flowchart-wave-container {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  margin-bottom: 0;
+}
+
+.flowchart-wave-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Wave Node Step Year / Pill Badges */
+.flowchart-wave-pills {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.wave-node-pill {
+  position: absolute;
+  transform: translateX(-50%);
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #18091E;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.5px;
+  z-index: 5;
+  pointer-events: auto;
+  will-change: left, top, opacity;
+}
+
+.wave-node-pill.pill-pos-1 {
+  left: 20%;
+  top: 64px;
+  background: rgba(244, 114, 182, 0.16);
+  border: 1.5px solid #F472B6;
+  color: #F472B6;
+  box-shadow: 0 0 16px rgba(244, 114, 182, 0.35);
+}
+
+.wave-node-pill.pill-pos-2 {
+  left: 50%;
+  top: 128px;
+  background: rgba(255, 64, 129, 0.16);
+  border: 1.5px solid #FF4081;
+  color: #FF4081;
+  box-shadow: 0 0 16px rgba(255, 64, 129, 0.35);
+}
+
+.wave-node-pill.pill-pos-3 {
+  left: 80%;
+  top: 64px;
+}
+
+.wave-node-pill.active-pill {
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  color: #FFFFFF;
+  background: var(--primary);
+  font-weight: 800;
+  box-shadow: 0 0 20px rgba(225, 29, 116, 0.65), 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* Cards Grid (Sits directly underneath the wave curve, perfectly aligned with stems) */
+.flowchart-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2%;
+  padding: 0 6%;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  margin-top: 0;
+}
+
+.flowchart-milestone {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+/* Base Card Container */
+.flowchart-card {
+  width: 100%;
+  border-radius: 24px;
+  padding: 30px 24px 26px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 14px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+}
+
+/* Top anchor pin base */
+.flowchart-milestone::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #100314;
+  z-index: 15;
+  transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   PROGRESSION RAMP: ROSE FUCHSIA -> VIVID PINK -> ELECTRIC BRAND PINK
+   ========================================================================== */
+
+/* Step 01: Soft Rose Fuchsia */
+.flowchart-milestone.milestone-1::before {
+  background: #F472B6;
+  box-shadow: 0 0 12px #F472B6;
+}
+
+.flowchart-milestone.milestone-1 .flowchart-card {
+  border: 1.5px solid #3B0E2A;
+  background: radial-gradient(circle at 10% 12%, rgba(244, 114, 182, 0.20) 0%, transparent 48%),
+              radial-gradient(circle at 92% 88%, rgba(244, 114, 182, 0.08) 0%, transparent 48%),
+              #120516;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75), 
+              0 0 30px -4px rgba(244, 114, 182, 0.28);
+}
+
+.flowchart-milestone.milestone-1:hover .flowchart-card {
+  transform: translateY(-4px);
+  border-color: #F472B6;
+  box-shadow: 0 26px 52px -10px rgba(0, 0, 0, 0.85), 
+              0 0 38px rgba(244, 114, 182, 0.45);
+}
+
+.flowchart-milestone.milestone-1 .flowchart-tag-pill {
+  color: #F472B6;
+  background: rgba(244, 114, 182, 0.14);
+  border: 1px solid rgba(244, 114, 182, 0.4);
+}
+
+.flowchart-milestone.milestone-1 .flowchart-meta-row {
+  border-top-color: rgba(244, 114, 182, 0.2);
+}
+
+/* Step 02: Vibrant Bright Pink */
+.flowchart-milestone.milestone-2::before {
+  background: #FF4081;
+  box-shadow: 0 0 12px #FF4081;
+}
+
+.flowchart-milestone.milestone-2 .flowchart-card {
+  border: 1.5px solid #480D2F;
+  background: radial-gradient(circle at 10% 12%, rgba(255, 64, 129, 0.22) 0%, transparent 48%),
+              radial-gradient(circle at 92% 88%, rgba(255, 64, 129, 0.10) 0%, transparent 48%),
+              #120516;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75), 
+              0 0 30px -4px rgba(255, 64, 129, 0.30);
+}
+
+.flowchart-milestone.milestone-2:hover .flowchart-card {
+  transform: translateY(-4px);
+  border-color: #FF4081;
+  box-shadow: 0 26px 52px -10px rgba(0, 0, 0, 0.85), 
+              0 0 38px rgba(255, 64, 129, 0.45);
+}
+
+.flowchart-milestone.milestone-2 .flowchart-tag-pill {
+  color: #FF4081;
+  background: rgba(255, 64, 129, 0.14);
+  border: 1px solid rgba(255, 64, 129, 0.4);
+}
+
+.flowchart-milestone.milestone-2 .flowchart-meta-row {
+  border-top-color: rgba(255, 64, 129, 0.2);
+}
+
+/* Step 03: Electric Brand Pink (#E11D74) */
+.flowchart-milestone.milestone-3::before,
+.flowchart-milestone.is-active::before {
+  background: var(--primary);
+  box-shadow: 0 0 14px var(--primary);
+}
+
+.flowchart-milestone.milestone-3 .flowchart-card,
+.flowchart-milestone.is-active .flowchart-card {
+  border: 1.5px solid rgba(225, 29, 116, 0.6);
+  background: radial-gradient(circle at 10% 12%, rgba(225, 29, 116, 0.26) 0%, transparent 48%),
+              radial-gradient(circle at 92% 88%, rgba(225, 29, 116, 0.12) 0%, transparent 48%),
+              #120516;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75), 
+              0 0 30px -4px rgba(225, 29, 116, 0.35);
+}
+
+.flowchart-milestone.milestone-3:hover .flowchart-card,
+.flowchart-milestone.is-active:hover .flowchart-card {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 26px 52px -10px rgba(0, 0, 0, 0.85), 
+              0 0 38px rgba(225, 29, 116, 0.5);
+}
+
+.flowchart-milestone.milestone-3 .flowchart-tag-pill,
+.flowchart-milestone.is-active .flowchart-tag-pill {
+  color: #FF65A3;
+  background: rgba(225, 29, 116, 0.16);
+  border: 1px solid rgba(225, 29, 116, 0.45);
+}
+
+.flowchart-milestone.milestone-3 .flowchart-step-title,
+.flowchart-milestone.is-active .flowchart-step-title {
+  color: #FFFFFF;
+}
+
+.flowchart-milestone.milestone-3 .flowchart-meta-row,
+.flowchart-milestone.is-active .flowchart-meta-row {
+  color: #FF65A3;
+  border-top-color: rgba(225, 29, 116, 0.25);
+}
+
+/* Tag Pills */
+.flowchart-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* Step Title */
+.flowchart-step-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+/* Step Description */
+.flowchart-step-desc {
+  font-size: 0.92rem;
+  color: #A89CAE;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 48px;
+}
+
+/* Meta Row */
+.flowchart-meta-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #F8FAFC;
+  padding-top: 14px;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .flowchart-wave-container {
+    display: none;
+  }
+  .flowchart-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  .flowchart-card::before {
+    display: none;
+  }
+  .flowchart-card {
+    padding: 22px 18px;
+  }
+}
+
+/* ==========================================================================
+   LIVE MAP SECTION (CLEAN PINK & WHITE)
+   ========================================================================== */
+.map-section {
+  scroll-margin-top: 85px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.map-card-wrapper {
+  background: #FFFFFF;
+  border: 1px solid var(--border-pink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  padding: 20px;
+}
+
+.map-toolbar-clean {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.map-chips-clean {
+  display: flex;
+  gap: 8px;
+}
+
+.map-chip-btn {
+  padding: 6px 14px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-pink);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-chip-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.map-chip-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.map-split-clean {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 20px;
+  min-height: 440px;
+}
+
+.map-frame-box {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  min-height: 440px;
+}
+
+#home-live-map {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+}
+
+.map-spots-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 440px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.parking-card-mini {
+  display: flex;
+  gap: 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.parking-card-mini:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(225, 29, 116, 0.12);
+}
+
+.parking-mini-thumb {
+  width: 80px;
+  height: 75px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.parking-mini-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.parking-mini-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.parking-mini-address {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.parking-mini-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.parking-mini-price {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   WHY APNA PARKING - DARK GLOW LUXURY PINK CARDS
+   ========================================================================== */
+.benefits-section {
+  background: #100314;
+  background: radial-gradient(circle at 50% 12%, #220727 0%, #100314 85%);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(225, 29, 116, 0.15);
+  border-bottom: 1px solid rgba(225, 29, 116, 0.15);
+  padding: 85px 0 95px 0;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Individual Sleek Glow Card */
+.driver-feature-card {
+  position: relative;
+  background: #120516;
+  background: radial-gradient(circle at 10% 12%, rgba(225, 29, 116, 0.28) 0%, transparent 48%),
+              radial-gradient(circle at 92% 88%, rgba(255, 64, 129, 0.18) 0%, transparent 48%),
+              #120516;
+  border: 1px solid rgba(225, 29, 116, 0.22);
+  border-radius: 28px;
+  padding: 34px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75), 
+              0 0 28px -5px rgba(225, 29, 116, 0.16);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.driver-feature-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 64, 129, 0.55);
+  box-shadow: 0 28px 55px -10px rgba(0, 0, 0, 0.85), 
+              0 0 38px rgba(225, 29, 116, 0.35);
+}
+
+/* Header Row: Label on Left, Pill Badge on Right */
+.driver-card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.driver-card-tier-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.driver-tier-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-pink);
+}
+
+.driver-card-tier {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #F8FAFC;
+  letter-spacing: -0.2px;
+}
+
+.driver-card-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* Center Metric Display */
+.driver-card-metric {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  user-select: none;
+}
+
+.driver-card-metric .metric-symbol {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  line-height: 1.2;
+  margin-top: 6px;
+}
+
+.driver-card-metric .metric-val {
+  font-size: 4rem;
+  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1;
+  letter-spacing: -1px;
+  background: linear-gradient(180deg, #FFFFFF 25%, #FBCFE8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
+}
+
+.driver-card-sublabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #A89CAE;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Description Text */
+.driver-card-desc {
+  font-size: 0.9rem;
+  color: #A89CAE;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  min-height: 44px;
+}
+
+/* Bottom Footnote Badge */
+.driver-card-footnote {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  color: #CBD5E1;
+  font-weight: 600;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  margin-top: auto;
+  letter-spacing: 0.2px;
+}
+
+/* ==========================================================================
+   SIMPLE TARIFF CARDS
+   ========================================================================== */
+.tariff-section {
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-pink);
+}
+
+.tariff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.tariff-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 30px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.tariff-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(225, 29, 116, 0.10);
+}
+
+.tariff-card.featured {
+  border-color: var(--primary);
+  box-shadow: 0 6px 24px rgba(225, 29, 116, 0.15);
+  position: relative;
+}
+
+.tariff-title {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.tariff-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin-bottom: 18px;
+}
+
+.tariff-price span {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tariff-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text-body);
+}
+
+.tariff-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tariff-list svg {
+  color: var(--emerald);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   SIMPLE CTA BANNER
+   ========================================================================== */
+.cta-section {
+  background: #120516;
+  background: radial-gradient(circle at 50% 50%, #240929 0%, #120516 100%);
+  color: #FFFFFF;
+  padding: 60px 0;
+  text-align: center;
+  border-top: 1px solid rgba(225, 29, 116, 0.18);
+  border-bottom: 1px solid rgba(225, 29, 116, 0.18);
+}
+
+.cta-box {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.cta-box h2 {
+  color: #FFFFFF;
+  font-size: 2.2rem;
+}
+
+.cta-box p {
+  color: #A89CAE;
+  font-size: 1.05rem;
+}
+
+/* ==========================================================================
+   CLEAN FOOTER (ZERO CLUTTER)
+   ========================================================================== */
+.ap-footer-simple {
+  background: #0D0310;
+  color: #A89CAE;
+  padding: 50px 0 24px 0;
+  border-top: 1px solid rgba(225, 29, 116, 0.12);
+}
+
+.footer-simple-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(225, 29, 116, 0.12);
+}
+
+.footer-nav-simple {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-nav-simple a {
+  color: #A89CAE;
+  font-size: 0.9rem;
+}
+
+.footer-nav-simple a:hover {
+  color: #FF65A3;
+}
+
+.footer-bottom-simple {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #7E7085;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .hero-title {
+    font-size: 2.3rem;
+    white-space: normal;
+  }
+  .how-grid,
+  .benefits-grid,
+  .tariff-grid {
+    grid-template-columns: 1fr;
+  }
+  .map-split-clean {
+    grid-template-columns: 1fr;
+  }
+  .footer-simple-grid {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-faded-box {
+    padding: 32px 18px 26px 18px;
+    width: 96%;
+    gap: 20px;
+  }
+  .hero-faded-box::before {
+    inset: -12px -8px;
+    border-radius: 20px;
+    -webkit-mask-image: 
+      linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: 
+      linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+  .hero-title {
+    font-size: 1.85rem;
+    white-space: normal;
+  }
+  .hero-search-card {
+    flex-direction: column;
+    padding: 8px;
+    gap: 8px;
+  }
+  .hero-search-input-wrap {
+    width: 100%;
+    padding: 6px 8px;
+  }
+  .hero-search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-trending {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+}

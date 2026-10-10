@@ -19,6 +19,7 @@ bp = Blueprint("payments", __name__)
 # ---------------------------------------------------------------------------
 
 @bp.route("/bookings", methods=["POST"])
+@bp.route("/api/bookings", methods=["POST"])
 @jwt_required()
 def create_booking():
     """Create a parking or service booking that a payment can later be attached to."""
@@ -222,6 +223,7 @@ def create_booking():
 
 
 @bp.route("/bookings", methods=["GET"])
+@bp.route("/api/bookings", methods=["GET"])
 @jwt_required()
 def list_bookings():
     """List the current user's bookings."""
@@ -244,6 +246,7 @@ def list_bookings():
 
 
 @bp.route("/bookings/<booking_id_str>/cancel", methods=["POST"])
+@bp.route("/api/bookings/<booking_id_str>/cancel", methods=["POST"])
 @jwt_required()
 def cancel_booking(booking_id_str):
     """Cancel an active booking."""
@@ -278,6 +281,7 @@ def cancel_booking(booking_id_str):
 
 
 @bp.route("/bookings/<booking_id_str>/extend", methods=["POST"])
+@bp.route("/api/bookings/<booking_id_str>/extend", methods=["POST"])
 @jwt_required()
 def extend_booking(booking_id_str):
     """Extend duration of an active booking."""
@@ -323,6 +327,7 @@ def extend_booking(booking_id_str):
 # ---------------------------------------------------------------------------
 
 @bp.route("/payments/create", methods=["POST"])
+@bp.route("/api/payments/create", methods=["POST"])
 @jwt_required()
 @limiter.limit("10 per minute")
 def create_payment():
@@ -418,6 +423,7 @@ def create_payment():
 
 
 @bp.route("/payments/verify", methods=["POST"])
+@bp.route("/api/payments/verify", methods=["POST"])
 @jwt_required()
 @limiter.limit("10 per minute")
 def verify_payment():
@@ -490,6 +496,7 @@ def verify_payment():
 
 
 @bp.route("/payments/history", methods=["GET"])
+@bp.route("/api/payments/history", methods=["GET"])
 @jwt_required()
 def payment_history():
     """Return the current user's payment/booking history, paginated."""

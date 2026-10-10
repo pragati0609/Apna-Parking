@@ -362,6 +362,7 @@ class Booking(db.Model):
             "finalAmount": float(self.total_amount),
             "status": ui_status,
             "qrCodeData": f"APNA-PARKING-PASS|{booking_id_str}|{parking_name}|{slot_num}|{plate}|{date_str}|{start_time_str}",
+            "paymentMethod": self.payments[-1].payment_method if self.payments else "UPI",
             "createdAt": self.created_at.isoformat() if self.created_at else None,
         }
 

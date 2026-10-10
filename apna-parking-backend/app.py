@@ -1,7 +1,7 @@
 import os
 import re
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
 from email_validator import validate_email, EmailNotValidError
@@ -20,6 +20,10 @@ from parking_spots import bp as parking_spots_bp
 from seed_data import seed_parking_data
 
 load_dotenv()
+
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "apna-parking-frontend", "public"))
+if not os.path.exists(FRONTEND_DIR):
+    FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "public"))
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
@@ -88,12 +92,59 @@ def internal_error(e):
     return jsonify({"error": "Internal server error"}), 500
 
 
+# ---------------------------------------------------------------------------
+# Frontend Page & Static Asset Serving
+# ---------------------------------------------------------------------------
+
 @app.route("/")
-def hello():
+def index_page():
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.exists(index_path):
+        return send_from_directory(FRONTEND_DIR, "index.html")
     return "Hello, World!"
 
 
+@app.route("/find-parking")
+@app.route("/find-parking.html")
+def find_parking_page():
+    return send_from_directory(FRONTEND_DIR, "find-parking.html")
+
+
+@app.route("/book-slot")
+@app.route("/book-slot.html")
+def book_slot_page():
+    return send_from_directory(FRONTEND_DIR, "book-slot.html")
+
+
+@app.route("/my-bookings")
+@app.route("/my-bookings.html")
+def my_bookings_page():
+    return send_from_directory(FRONTEND_DIR, "my-bookings.html")
+
+
+@app.route("/talk-to-us")
+@app.route("/talk-to-us.html")
+def talk_to_us_page():
+    return send_from_directory(FRONTEND_DIR, "talk-to-us.html")
+
+
+@app.route("/css/<path:filename>")
+def serve_css(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, "css"), filename)
+
+
+@app.route("/js/<path:filename>")
+def serve_js(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, "js"), filename)
+
+
+@app.route("/assets/<path:filename>")
+def serve_assets(filename):
+    return send_from_directory(os.path.join(FRONTEND_DIR, "assets"), filename)
+
+
 @app.route("/signup", methods=["POST"])
+@app.route("/api/signup", methods=["POST"])
 @limiter.limit("5 per minute")
 def signup():
     try:
@@ -163,6 +214,7 @@ def signup():
 
 
 @app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 @limiter.limit("5 per minute")
 def login():
     try:
@@ -202,6 +254,7 @@ def login():
 
 
 @app.route("/profile", methods=["GET"])
+@app.route("/api/profile", methods=["GET"])
 @jwt_required()
 def profile():
     try:
@@ -227,6 +280,7 @@ def profile():
 
 
 @app.route("/logout", methods=["POST"])
+@app.route("/api/logout", methods=["POST"])
 @jwt_required()
 def logout():
     try:
